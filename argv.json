@@ -1,0 +1,52 @@
+#include <iostream> // khai báo dùng thư viện iostream
+using namespace std; // dùng để sử dung cin cout ko phải ghi thêm std
+
+class Employee { ./  
+  public: // được truy cập bên ngoài class
+  int roll; // khai báo biến roll
+  int salary;// khai báo biến salary
+  void input(int index){ // hàm input dùng để nhập thonng tin sinh viên 
+    cout<<"Enter Roll of Employees ["<<index<< "]:" ; // in ra màn hình
+    cin>>roll; // nhập giá trị từ bàn phím
+    cout<<"Enter Salary of Employees["<<index<<"]:" ;// in ra màn hình 
+    cin>>salary; // nhập giá trị từ bàn phím
+  }
+  void display (int index){ // hàm display dùng để hiển thị thông tin của 1 sinh viên 
+    cout<<"["<<index<<"] Roll No:"<<roll
+        <<"Salary"<<salary<<endl;
+  }
+};
+int main(){ // hàm chính , chương trình bắt đầu chạy từ đây
+  int n, choice; // khai báo 2 biến là n và choice  ( n là số lương nhân viên , choice để lưu lựa chọn ng dùng trong menu)
+  Employee emp[100]; // tạo mảng 100 đối tương employee
+  cout<<"Enter the number of employees:";
+  cin>>n;
+  for (int i=0; i<n ; i++){ // vòng lặp for để nhập dữ liệu cho nhân viên 
+    emp[i].input(i+1); // emp[i] la đối tg của class employee, thầy sẽ hỏi tại sao dùng đc input ta trả lời  :vì  input được khai báo trong phần public của class Employee. 
+  }
+  do{ // thầy hỏi sao dùng do{...}while (choice!=3) - vì menu phải chạy ít nhất 1 lần 
+    cout<<"\nMenu:\n";
+    cout<<"1.Display all employees\n";
+    cout<<"2.Show employees with the highest salary\n";
+    cout<<"3.Exit\n"; 
+    cout<<"Enter your choice:";
+    cin>> choice;
+    if (choice==1){ // dùng để hiển thị toàn bộ danh sách nhân viên
+      cout<<"\nEmployee Data:\n";
+      for(int i=0 ;i<n;i++){
+        emp[i].display(i+1);
+      }
+    }
+     else if ( choice ==2){
+      int maxSalary=emp[0].salary; // gán lương của nvien đầu tiên để làm mốc so sánh
+      for (int i=1;i<n;i++){
+        if (emp[i].salary ==maxSalary){ //kiểm tra xem nhân viên nào lương cao nhất
+          cout<<"RollNo:"<<emp[i].roll
+              <<"Salary:"<<emp[i].salary<<endl;
+        }
+      }
+     }
+    }while (choice !=3);
+    cout<<"Exiting program.\n";
+    return 0;
+}
