@@ -1,10 +1,11 @@
-seconds = 42 * 60 +42
-print(seconds)
-# question 2
-miles = 10 / 1.61
-print(miles)
-# question 3
-time_seconds = 42 * 60 + 42
-miles = 10 / 1.61
-speed = miles / (time_seconds / 3600)
-print(speed)
+import time
+
+t = time.time()
+
+days = t // 86400
+hours = (t % 86400) // 3600
+minutes = (t % 3600) // 60
+seconds = t % 60
+
+print("days since epoch:", int(days))
+print("time:", int(hours), ":", int(minutes), ":", int(seconds))
