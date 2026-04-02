@@ -1,0 +1,58 @@
+class HangHoa:
+    def __init__(self, ma_hang, ten_hang, nha_sx, gia):
+        self.ma_hang = ma_hang
+        self.ten_hang = ten_hang
+        self.nha_sx = nha_sx
+        self.gia = gia
+
+    def hien_thi(self):
+        print(f"Mã: {self.ma_hang}, Tên: {self.ten_hang}, NSX: {self.nha_sx}, Giá: {self.gia}")
+
+
+class HangDienMay(HangHoa):
+    def __init__(self, ma_hang, ten_hang, nha_sx, gia, tg_bao_hanh, dien_ap, cong_suat):
+        super().__init__(ma_hang, ten_hang, nha_sx, gia)
+        self.tg_bao_hanh = tg_bao_hanh
+        self.dien_ap = dien_ap
+        self.cong_suat = cong_suat
+
+    def hien_thi(self):
+        super().hien_thi()
+        print(f"Bảo hành: {self.tg_bao_hanh} tháng, Điện áp: {self.dien_ap}V, Công suất: {self.cong_suat}W")
+
+
+class HangSanhSu(HangHoa):
+    def __init__(self, ma_hang, ten_hang, nha_sx, gia, loai_nguyen_lieu):
+        super().__init__(ma_hang, ten_hang, nha_sx, gia)
+        self.loai_nguyen_lieu = loai_nguyen_lieu
+
+    def hien_thi(self):
+        super().hien_thi()
+        print(f"Nguyên liệu: {self.loai_nguyen_lieu}")
+
+
+class HangThucPham(HangHoa):
+    def __init__(self, ma_hang, ten_hang, nha_sx, gia, ngay_sx, ngay_het_han):
+        super().__init__(ma_hang, ten_hang, nha_sx, gia)
+        self.ngay_sx = ngay_sx
+        self.ngay_het_han = ngay_het_han
+
+    def hien_thi(self):
+        super().hien_thi()
+        print(f"NSX: {self.ngay_sx}, HSD: {self.ngay_het_han}")
+
+
+if __name__ == "__main__":
+    dm = HangDienMay("DM01", "Tivi", "Samsung", 10000000, 24, 220, 150)
+    ss = HangSanhSu("SS01", "Bát", "Bát Tràng", 50000, "Gốm")
+    tp = HangThucPham("TP01", "Sữa", "Vinamilk", 30000, "01/01/2024", "01/06/2024")
+
+    print("=== Hàng điện máy ===")
+    dm.hien_thi()
+
+    print("\n=== Hàng sành sứ ===")
+    ss.hien_thi()
+
+    print("\n=== Hàng thực phẩm ===")
+    tp.hien_thi()
+    
