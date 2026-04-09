@@ -1,0 +1,120 @@
+from abc import ABC, abstractmethod
+
+class TuoiKhongHopLe(Exception):
+    pass
+
+class BacKhongHopLe(Exception):
+    pass
+
+
+class CanBo(ABC):
+    def __init__(self, ho_ten, tuoi, gioi_tinh, dia_chi):
+        self.__ho_ten = ho_ten
+        self.tuoi = tuoi
+        self.__gioi_tinh = gioi_tinh
+        self.__dia_chi = dia_chi
+
+    @property
+    def ho_ten(self):
+        return self.__ho_ten
+
+    @property
+    def tuoi(self):
+        return self.__tuoi
+
+    @tuoi.setter
+    def tuoi(self, v):
+        if v < 18 or v > 65:
+            raise TuoiKhongHopLe("Tuổi phải từ 18–65")
+        self.__tuoi = v
+
+    @abstractmethod
+    def mo_ta(self):
+        raise NotImplementedError("Phải override ở class con")
+
+    def __str__(self):
+        return f"{self.__ho_ten} | {self.__tuoi} | {self.__gioi_tinh} | {self.__dia_chi} | {self.mo_ta()}"
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.__ho_ten}', {self.__tuoi}, '{self.__gioi_tinh}', '{self.__dia_chi}')"
+
+    def __eq__(self, o):
+        return isinstance(o, CanBo) and (self.__ho_ten, self.__tuoi) == (o.__ho_ten, o.__tuoi)
+
+    def __lt__(self, o):
+        return self.__ho_ten < o.__ho_ten
+
+
+class CongNhan(CanBo):
+    def __init__(self, ho_ten, tuoi, gioi_tinh, dia_chi, bac):
+        super().__init__(ho_ten, tuoi, gioi_tinh, dia_chi)
+        if bac < 1 or bac > 10:
+            raise BacKhongHopLe("Bậc phải từ 1–10")
+        self.__bac = bac
+
+    def mo_ta(self):
+        return f"Công nhân bậc {self.__bac}"
+
+
+class KySu(CanBo):
+    def __init__(self, ho_ten, tuoi, gioi_tinh, dia_chi, nganh):
+        super().__init__(ho_ten, tuoi, gioi_tinh, dia_chi)
+        self.__nganh = nganh
+
+    def mo_ta(self):
+        return f"Kỹ sư ngành {self.__nganh}"
+
+
+class NhanVien(CanBo):
+    def __init__(self, ho_ten, tuoi, gioi_tinh, dia_chi, cong_viec):
+        super().__init__(ho_ten, tuoi, gioi_tinh, dia_chi)
+        self.__cong_viec = cong_viec
+
+    def mo_ta(self):
+        return f"Nhân viên {self.__cong_viec}"
+
+
+class QLCB:
+    def __init__(self):
+        self.ds = []
+
+    def them(self, cb):
+        self.ds.append(cb)
+
+    def hien_thi(self):
+        for cb in self.ds:
+            print(cb)
+
+    def tim_theo_ten(self, ten):
+        return [cb for cb in self.ds if ten.lower() in str(cb).lower()]
+
+    def sap_xep(self):
+        return sorted(self.ds)
+
+    def luu_file(self, filename):
+        with open(filename, "w", encoding="utf-8") as f:
+            for cb in self.ds:
+                f.write(repr(cb) + "\n")
+
+    def doc_file(self, filename):
+        with open(filename, "r", encoding="utf-8") as f:
+            for line in f:
+                self.ds.append(eval(line.strip()))
+
+
+if __name__ == "__main__":
+    ql = QLCB()
+
+    try:
+        ql.them(CongNhan("Nguyen A", 30, "Nam", "HN", 5))
+        ql.them(KySu("Tran B", 28, "Nu", "HCM", "CNTT"))
+        ql.them(NhanVien("Le C", 35, "Nam", "DN", "Ke toan"))
+    except Exception as e:
+        print("Lỗi:", e)
+
+    print("\n--- Danh sách ---")
+    ql.hien_thi()
+
+    print("\n--- Sắp xếp ---")
+    for cb in ql.sap_xep():
+        print(cb)
