@@ -1,0 +1,87 @@
+from math import gcd
+
+class MauSoBangKhong(Exception):
+    pass
+
+
+class PhanSo:
+    def __init__(self, tu, mau):
+        if mau == 0:
+            raise MauSoBangKhong("Mẫu số = 0")
+        self.__tu = tu
+        self.__mau = mau
+
+    @property
+    def tu(self): return self.__tu
+
+    @property
+    def mau(self): return self.__mau
+
+    # ===== rút gọn =====
+    def toi_gian(self):
+        g = gcd(self.__tu, self.__mau)
+        return PhanSo(self.__tu // g, self.__mau // g)
+
+    def is_toi_gian(self):
+        return gcd(self.__tu, self.__mau) == 1
+
+    # ===== toán tử =====
+    def __add__(self, o):
+        return PhanSo(self.__tu*o.__mau + o.__tu*self.__mau,
+                      self.__mau*o.__mau).toi_gian()
+
+    def __sub__(self, o):
+        return PhanSo(self.__tu*o.__mau - o.__tu*self.__mau,
+                      self.__mau*o.__mau).toi_gian()
+
+    def __mul__(self, o):
+        return PhanSo(self.__tu*o.__tu,
+                      self.__mau*o.__mau).toi_gian()
+
+    def __truediv__(self, o):
+        return PhanSo(self.__tu*o.__mau,
+                      self.__mau*o.__tu).toi_gian()
+
+    # ===== so sánh =====
+    def __eq__(self, o):
+        a, b = self.toi_gian(), o.toi_gian()
+        return a.tu == b.tu and a.mau == b.mau
+
+    def __lt__(self, o):
+        return self.__tu * o.__mau < o.__tu * self.__mau
+
+    def __gt__(self, o):
+        return self.__tu * o.__mau > o.__tu * self.__mau
+
+    # ===== hiển thị =====
+    def __str__(self):
+        tg = self.toi_gian()
+        if tg.mau == 1:
+            return str(tg.tu)
+        return f"{tg.tu}/{tg.mau}"
+
+    def __repr__(self):
+        return f"PhanSo({self.__tu}, {self.__mau})"
+
+    def __hash__(self):
+        tg = self.toi_gian()
+        return hash((tg.tu, tg.mau))
+
+
+# ===== TEST =====
+if __name__ == "__main__":
+    ds = [PhanSo(2,4), PhanSo(1,2), PhanSo(3,4), PhanSo(6,3)]
+
+    print("Danh sách:")
+    for ps in ds:
+        print(ps)
+
+    print("\nSau khi rút gọn:")
+    for ps in ds:
+        print(ps.toi_gian())
+
+    print("\nSắp xếp:")
+    for ps in sorted(ds):
+        print(ps)
+
+    print("\nCộng thử:", ds[0] + ds[1])
